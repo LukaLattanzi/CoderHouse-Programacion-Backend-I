@@ -1,76 +1,61 @@
 class ProductManager {
-    constructor() {
-        this.products = [];
-        this.currentId = 1; // Para manejar el ID autoincrementable
+    #admin;
+
+    constructor(products) {
+        this.products = products;
+        this.#admin = true;
     }
 
-    addProduct(product) {
-        // Validar que todos los campos sean obligatorios
-        const { title, description, price, thumbnail, code, stock } = product;
-        if (!title || !description || !price || !thumbnail || !code || !stock) {
-            console.error("Todos los campos son obligatorios.");
-            return;
+    async getProducts() {
+        try {
+            const response = await fetch('https://fakestoreapi.com/products');
+            const data = await response.json();
+            this.products = data;
+        } catch (error) {
+            console.error(error.message);
         }
-
-        // Validar que no se repita el campo `code`
-        const codeExists = this.products.some(p => p.code === code);
-        if (codeExists) {
-            console.error(`El código "${code}" ya existe.`);
-            return;
-        }
-
-        // Agregar el producto con un ID autoincrementable
-        const newProduct = {
-            id: this.currentId++,
-            title,
-            description,
-            price,
-            thumbnail,
-            code,
-            stock
-        };
-        this.products.push(newProduct);
     }
 
-    getProducts() {
-        return this.products;
+    deleteProductById(productId) {
+        try {
+            if (this.#admin) {
+                const newList = this.products.filter((product) => product.id !== productId);
+                this.products = newList;
+            } else {
+                throw new Error("Permiso denegado");
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
     }
 
-    getProductById(id) {
-        const product = this.products.find(p => p.id === id);
-        if (!product) {
-            console.error("Not found");
-            return null;
+    addProduct(newProduct) {
+        try {
+            if (this.#admin) {
+                this.products.push(newProduct);
+            } else {
+                throw new Error("Permiso denegado");
+            }
+        } catch (error) {
+            console.error(error.message);
         }
-        return product;
+    }
+
+}
+
+
+const main = async () => {
+    try {
+        const productManager = new ProductManager([]);
+        await productManager.getProducts();
+
+        productManager.deleteProductById(20);
+        productManager.addProduct({ id: 21, title: "Buzo gris", price: 2000 });
+
+        console.log(productManager.products);
+    } catch (error) {
+        console.error(error.message);
     }
 }
 
-// Ejemplo de uso
-const manager = new ProductManager();
-
-// Agregar productos
-manager.addProduct({
-    title: "Producto 1",
-    description: "Descripción del producto 1",
-    price: 100,
-    thumbnail: "ruta/imagen1.jpg",
-    code: "abc123",
-    stock: 10
-});
-
-manager.addProduct({
-    title: "Producto 2",
-    description: "Descripción del producto 2",
-    price: 200,
-    thumbnail: "ruta/imagen2.jpg",
-    code: "def456",
-    stock: 5
-});
-
-// Obtener todos los productos
-console.log(manager.getProducts());
-
-// Buscar producto por ID
-console.log(manager.getProductById(1)); // Producto con ID 1
-console.log(manager.getProductById(99)); // Not found
+main();
