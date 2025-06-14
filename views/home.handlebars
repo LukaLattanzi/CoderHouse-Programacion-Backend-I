@@ -1,0 +1,18 @@
+<div>
+  <h1>Home Page</h1>
+  {{#each products}}
+    <li>
+      <h2>{{this.name}}</h2>
+      <h3>Price: ${{this.price}}</h3>
+    </li>
+  {{/each}}
+  {{#with user}}
+    <h2>User Information</h2>
+    <p>Name: {{this.username}}</p>
+    {{#if this.isAdmin}}
+      <p>Status: Admin</p>
+    {{else}}
+      <p>Status: Regular User</p>
+    {{/if}}
+  {{/with}}
+</div>

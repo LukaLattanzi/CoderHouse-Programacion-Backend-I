@@ -1,0 +1,24 @@
+{
+  "name": "coderhouse-programacion-backend-i",
+  "version": "1.0.0",
+  "description": "",
+  "main": "3. Desarrollo Avanzado de Backend con Node.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LukaLattanzi/CoderHouse-Programacion-Backend-I.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LukaLattanzi/CoderHouse-Programacion-Backend-I/issues"
+  },
+  "homepage": "https://github.com/LukaLattanzi/CoderHouse-Programacion-Backend-I#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.3"
+  }
+}
