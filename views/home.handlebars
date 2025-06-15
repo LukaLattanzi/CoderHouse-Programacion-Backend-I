@@ -1,9 +1,22 @@
+<!-- filepath: /home/lukal/programacion/CoderHouse-Programacion-Backend-I/views/home.handlebars -->
 <div>
   <h1>Home Page</h1>
   {{#each products}}
     <li>
-      <h2>{{this.name}}</h2>
+      <h2>{{this.title}}</h2>
       <h3>Price: ${{this.price}}</h3>
+      <p>{{this.description}}</p>
+      <p><b>Code:</b> {{this.code}}</p>
+      <p><b>Stock:</b> {{this.stock}}</p>
+      <p><b>Category:</b> {{this.category}}</p>
+      <p><b>Status:</b> {{this.status}}</p>
+      {{#if this.thumbnails}}
+        {{#each this.thumbnails}}
+          {{#if @first}}
+            <img src="{{this}}" alt="{{../title}}" width="100" />
+          {{/if}}
+        {{/each}}
+      {{/if}}
     </li>
   {{/each}}
   {{#with user}}
@@ -15,4 +28,17 @@
       <p>Status: Regular User</p>
     {{/if}}
   {{/with}}
+</div>
+
+<div>
+  <form action="/api/products" method="POST">
+    <input type="text" name="title" placeholder="Product Title" required />
+    <input type="text" name="description" placeholder="Description" required />
+    <input type="number" name="price" placeholder="Price" required />
+    <input type="text" name="code" placeholder="Code" required />
+    <input type="number" name="stock" placeholder="Stock" required />
+    <input type="text" name="category" placeholder="Category" required />
+    <input type="text" name="thumbnails" placeholder="Image URL (opcional)" />
+    <button type="submit">Add Product</button>
+  </form>
 </div>
