@@ -1,44 +1,42 @@
 <!-- filepath: /home/lukal/programacion/CoderHouse-Programacion-Backend-I/views/home.handlebars -->
-<div>
-  <h1>Home Page</h1>
-  {{#each products}}
-    <li>
-      <h2>{{this.title}}</h2>
-      <h3>Price: ${{this.price}}</h3>
-      <p>{{this.description}}</p>
-      <p><b>Code:</b> {{this.code}}</p>
-      <p><b>Stock:</b> {{this.stock}}</p>
-      <p><b>Category:</b> {{this.category}}</p>
-      <p><b>Status:</b> {{this.status}}</p>
-      {{#if this.thumbnails}}
-        {{#each this.thumbnails}}
-          {{#if @first}}
-            <img src="{{this}}" alt="{{../title}}" width="100" />
-          {{/if}}
-        {{/each}}
-      {{/if}}
-    </li>
-  {{/each}}
-  {{#with user}}
-    <h2>User Information</h2>
-    <p>Name: {{this.username}}</p>
-    {{#if this.isAdmin}}
-      <p>Status: Admin</p>
-    {{else}}
-      <p>Status: Regular User</p>
-    {{/if}}
-  {{/with}}
+<div class="container">
+  <h1>Productos</h1>
+  <div class="products-grid">
+    {{#each products}}
+      <div class="product-card">
+        {{#if this.thumbnails}}
+          {{#each this.thumbnails}}
+            {{#if @first}}
+              <img src="{{this}}" alt="{{../title}}" class="product-img"/>
+            {{/if}}
+          {{/each}}
+        {{else}}
+          <img src="/img/no-image.png" alt="Sin imagen" class="product-img"/>
+        {{/if}}
+        <div class="product-info">
+          <h2>{{this.title}}</h2>
+          <p class="price">$ {{this.price}}</p>
+          <p>{{this.description}}</p>
+          <p><b>Código:</b> {{this.code}}</p>
+          <p><b>Stock:</b> {{this.stock}}</p>
+          <p><b>Categoría:</b> {{this.category}}</p>
+          <p><b>Status:</b> {{this.status}}</p>
+        </div>
+      </div>
+    {{/each}}
+  </div>
 </div>
 
-<div>
-  <form action="/api/products" method="POST">
-    <input type="text" name="title" placeholder="Product Title" required />
-    <input type="text" name="description" placeholder="Description" required />
-    <input type="number" name="price" placeholder="Price" required />
-    <input type="text" name="code" placeholder="Code" required />
+<div class="form-container">
+  <h2>Agregar producto</h2>
+  <form action="/api/products" method="POST" enctype="multipart/form-data">
+    <input type="text" name="title" placeholder="Título" required />
+    <input type="text" name="description" placeholder="Descripción" required />
+    <input type="number" name="price" placeholder="Precio" required />
+    <input type="text" name="code" placeholder="Código" required />
     <input type="number" name="stock" placeholder="Stock" required />
-    <input type="text" name="category" placeholder="Category" required />
-    <input type="text" name="thumbnails" placeholder="Image URL (opcional)" />
-    <button type="submit">Add Product</button>
+    <input type="text" name="category" placeholder="Categoría" required />
+    <input type="file" name="thumbnail" accept="image/*" />
+    <button type="submit">Agregar</button>
   </form>
 </div>
